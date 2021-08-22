@@ -103,9 +103,12 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         isSubmitted
             ? CircularProgressIndicator()
-            : RaisedButton(
-                splashColor: Theme.of(context).primaryColorDark,
-                color: Theme.of(context).primaryColor,
+            : ElevatedButton(
+                //splashColor: Theme.of(context).primaryColorDark,
+                //color: Theme.of(context).primaryColor,
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                ),
                 child: Text("Enviar",
                     style: Theme.of(context)
                         .textTheme
@@ -120,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                     print("errores en el form");
                   }
                 }),
-        FlatButton(
+        TextButton(
             onPressed: () {
               Navigator.pushReplacementNamed(context, RegisterPage.ROUTE);
             },

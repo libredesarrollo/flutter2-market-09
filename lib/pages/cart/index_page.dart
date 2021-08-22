@@ -9,7 +9,7 @@ class IndexPage extends StatefulWidget {
 
   final Function() onInit;
 
-  const IndexPage({ required this.onInit});
+  const IndexPage({required this.onInit});
 
   @override
   _IndexPageState createState() => _IndexPageState();

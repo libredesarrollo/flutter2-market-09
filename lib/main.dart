@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:market/pages/product/detail_page.dart';
 import 'package:market/redux/actions.dart';
+import 'package:market/redux/middleware/user_access_middleware_class.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
 import 'package:market/redux/reducers.dart';
 import 'package:market/models/app_state.dart';
+import 'package:market/redux/middleware/user_access_middleware.dart';
 
 import 'package:market/pages/login_page.dart';
 import 'package:market/pages/product/products_page.dart';
@@ -17,7 +19,12 @@ import 'package:market/pages/cart/index_page.dart' as cartPage;
 
 void main() {
   final store = Store<AppState>(appReducer,
-      initialState: AppState.initial(), middleware: [thunkMiddleware]);
+      initialState: AppState.initial(), middleware: [
+        TypedMiddleware<AppState,TogleCartProductAction>(UserAccessMiddleware()),
+        TypedMiddleware<AppState,ToggleFavoriteAction>(UserAccessMiddleware()),
+        //UserAccessMiddleware(),
+        //checkStatusUserMiddleware, 
+        thunkMiddleware]);
 
   runApp(MyApp(store: store));
 }
@@ -50,10 +57,14 @@ class MyApp extends StatelessWidget {
         title: 'Tienda en Línea',
         initialRoute: ProductsPage.ROUTE,
         routes: {
-          ProductsPage.ROUTE: (_) => ProductsPage(onInit: ()  {
-                store.dispatch(getUserAction);
-                store.dispatch(getProductsAction);
-                
+          ProductsPage.ROUTE: (_) => ProductsPage(onInit: () async {
+                final user = await store.dispatch(getUserAction);
+                await store.dispatch(getProductsAction(errorFunction));
+
+                if (user != null) {
+                  //store.dispatch(getProductsCartAction);
+                  //store.dispatch(getProductsFavoriteAction);
+                }
               }),
           LoginPage.ROUTE: (_) => LoginPage(),
           RegisterPage.ROUTE: (_) => RegisterPage(),
@@ -65,4 +76,9 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
+  errorFunction(){
+    print("Error de conexión - Función error");
+  }
+
 }

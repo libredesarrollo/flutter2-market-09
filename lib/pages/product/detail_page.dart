@@ -26,6 +26,8 @@ class _DetailPageState extends State<DetailPage> {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (_, state) {
+
+
           final Product product = state.findOne(productModal);
 
           return Scaffold(

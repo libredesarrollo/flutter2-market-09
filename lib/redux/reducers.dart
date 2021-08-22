@@ -5,7 +5,9 @@ AppState appReducer(AppState state, action) {
   return AppState(
       user: userReducer(state.user, action),
       products: productsReducer(state.products, action),
-      productsCart: productsCartReducer(state.productsCart, action));
+      productsCart: productsCartReducer(state.productsCart, action),
+      errorEnum: errorReducer(state.errorEnum, action),
+      );
 }
 
 userReducer(user, action) {
@@ -47,4 +49,11 @@ productsCartReducer(productsCart, action) {
   }
 
   return productsCart;
+}
+
+
+errorReducer(error, action){
+  if(action is ErrorAction) return action.errorEnum;
+
+  return error;
 }

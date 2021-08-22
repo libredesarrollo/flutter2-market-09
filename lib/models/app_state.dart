@@ -1,4 +1,5 @@
 import 'package:market/models/product.dart';
+import 'package:market/redux/actions.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -6,11 +7,12 @@ class AppState {
   final dynamic user;
   final List<Product> products;
   final List<Product> productsCart;
+  final ErrorEnum errorEnum;
 
-  AppState({required this.user, required this.products, required this.productsCart});
+  AppState({required this.user, required this.products, required this.productsCart, required this.errorEnum});
 
   factory AppState.initial() {
-    return AppState(user: null, products: [], productsCart: []);
+    return AppState(user: null, products: [], productsCart: [], errorEnum: ErrorEnum.Ok);
   }
 
   List<Product> favorites() => products.where((p) => p.favorite).toList();
