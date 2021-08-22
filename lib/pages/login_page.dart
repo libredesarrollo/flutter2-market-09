@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool _obscurePassword = true;
 
@@ -27,8 +27,12 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
 
+    _emailController.text = "andres";
+    _passwordController.text = "12345";
+
+    return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Login"),
       ),
@@ -116,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                     print("errores en el form");
                   }
                 }),
-        TextButton(
+        FlatButton(
             onPressed: () {
               Navigator.pushReplacementNamed(context, RegisterPage.ROUTE);
             },
@@ -172,7 +176,6 @@ class _LoginPageState extends State<LoginPage> {
         ));
     // Scaffold.of(context).showSnackBar(_snackBar);
     ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-
   }
 
   void _storeUserData(Map<String, dynamic> responseData) async {
@@ -182,11 +185,8 @@ class _LoginPageState extends State<LoginPage> {
     prefs.setString('email', responseData['user']['email']);
     prefs.setString('username', responseData['user']['username']);
     prefs.setString('id', responseData['user']['_id']);
-
-    print(prefs.getString('jwt'));
-    print(prefs.getString('email'));
-    print(prefs.getString('username'));
-    print(prefs.getString('id'));
+    prefs.setString('cart_id', responseData['user']['cart_id']);
+    prefs.setString('favorite_id', responseData['user']['favorite_id']);
   }
 
   void _redirectUser() {
